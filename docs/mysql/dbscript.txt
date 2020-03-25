@@ -1,0 +1,2 @@
+CREATE DATABASE testdb;
+CREATE USER 'testuser'@'localhost' IDENTIFIED BY 'testuser123';
