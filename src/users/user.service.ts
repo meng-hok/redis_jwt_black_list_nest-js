@@ -34,4 +34,8 @@ export class UserService
     async insert(user : UserEntity) : Promise<InsertResult>{
         return this.userRepository.insert(user);
     }
+    public async findOneByUserObjectWithAnyFields(user : any): Promise<UserEntity>
+    {
+        return await this.userRepository.findOne(user);
+    }
 }

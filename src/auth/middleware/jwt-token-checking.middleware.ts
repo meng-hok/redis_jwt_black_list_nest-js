@@ -1,13 +1,25 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Injectable, NestMiddleware, Request , Session } from '@nestjs/common';
+import {  Response } from 'express';
 import { createClient } from 'redis';
+import { request } from 'http';
 
 @Injectable()
 export class JWTBlacklistTokenPrevention implements NestMiddleware {
-  use(req: Request, res: Response, next: Function) {
+  use(@Request() req , res: Response, next: Function) {
     console.log('Request...');
+   
     try{
         const token = req.headers.authorization;
+       
+        if(req.session.user == undefined){
+          
+        
+            res.json({
+                description : "Cannot Directly Access Endpoint Without Login",
+                status : "FAIL"
+            })
+        }
+      
     
         const client = createClient();  
         
@@ -21,8 +33,12 @@ export class JWTBlacklistTokenPrevention implements NestMiddleware {
             }
          
         })
+        /***
+         * next() can not be called in callback function middle excute outside of callback function
+         */
          next();
     }catch(err){
+        console.log(err)
         next();
     }
   }
