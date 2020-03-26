@@ -19,8 +19,9 @@ export class JWTBlacklistTokenPrevention implements NestMiddleware {
                     status : "FAIL"
                 })
             }
-            next();
+         
         })
+         next();
     }catch(err){
         next();
     }
